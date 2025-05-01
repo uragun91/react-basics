@@ -1,23 +1,21 @@
-import { useState } from "react";
-import { MyComponent } from "./MyComponent/MyComponent";
+import { BrowserRouter, Routes, Route } from "react-router";
+import { Home } from "./pages/Home/Home";
+import { Checkout } from "./pages/Checkout/Checkout";
+import { Product } from "./pages/Product/Product";
+import { Layout } from "./layout/Layout";
 
 function App() {
-  const [count, setCount] = useState({ counter: 0, a: "a" });
-
-  const onCounterIncrease = (counter: number) => {
-    count.counter = counter;
-    setCount({ ...count });
-  };
-
   return (
-    <>
-      <MyComponent
-        postfixText="Some postfix text"
-        onCounterIncrease={onCounterIncrease}
-      />
-      <div>My text</div>
-      <div>Child counter: {count.counter}</div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="product/:id" element={<Product />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Route>
+        <Route path="*" element={<div> Not found</div>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

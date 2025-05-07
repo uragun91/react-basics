@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { Product } from "../types";
 
 const getCartFromLocalStorage = (): Product[] => {
@@ -17,7 +17,7 @@ const CartContext = createContext<{
   add: (product: Product) => void;
 }>({ cart: [], add: () => {} });
 
-export function CartProvider({ children }) {
+export function CartProvider({ children }: PropsWithChildren) {
   const [cart, setCart] = useState<Product[]>(getCartFromLocalStorage());
 
   const add = (product: Product) => {

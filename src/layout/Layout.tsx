@@ -8,13 +8,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Outlet } from "react-router";
-import { useCart } from "../providers/CartProvider";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Cart } from "../components/Cart/Cart";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 export function Layout() {
-  const cartContext = useCart();
+  // const cartContext = useCart();
+  const cart = useSelector((state: RootState) => state.cart);
 
   const [cartAnchorEl, setCartAnchorEl] = useState<HTMLButtonElement | null>(
     null
@@ -47,7 +49,7 @@ export function Layout() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <Badge badgeContent={cartContext.cart.length} color="secondary">
+            <Badge badgeContent={cart.length} color="secondary">
               <ShoppingCart />
             </Badge>
           </IconButton>

@@ -3,11 +3,13 @@ import { Home } from "./pages/Home/Home";
 import { Checkout } from "./pages/Checkout/Checkout";
 import { Product } from "./pages/Product/Product";
 import { Layout } from "./layout/Layout";
-import { CartProvider } from "./providers/CartProvider";
+// import { CartProvider } from "./providers/CartProvider";
+import { Provider as StoreProvider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
   return (
-    <CartProvider>
+    <StoreProvider store={store}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -18,7 +20,7 @@ function App() {
           <Route path="*" element={<div> Not found</div>} />
         </Routes>
       </BrowserRouter>
-    </CartProvider>
+    </StoreProvider>
   );
 }
 

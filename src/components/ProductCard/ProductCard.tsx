@@ -7,11 +7,13 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import { useCart } from "../../providers/CartProvider";
 import { Product } from "../../types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { addProduct } from "../../store/slices/cartSlice";
 
 export function ProductCard({ product }: { product: Product }) {
-  const { cart, add } = useCart();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -34,7 +36,7 @@ export function ProductCard({ product }: { product: Product }) {
       <CardActions>
         <Button
           onClick={() => {
-            add(product);
+            dispatch(addProduct(product));
           }}
         >
           + Add

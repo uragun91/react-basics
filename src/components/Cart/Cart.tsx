@@ -1,55 +1,36 @@
-import {
-  Avatar,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { Product } from "../../types";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { removeProduct } from "../../store/slices/cartSlice";
+
+import { fetchUserCart } from "../../store/slices/cartSlice";
+import { useEffect } from "react";
+import { Loading } from "../Loading/Loading";
+import { CartProductList } from "../CartProductList/CartProdcutList";
 
 export function Cart() {
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart.asyncCart);
+  const isLoadingCart = useSelector(
+    (state: RootState) => state.cart.isLoadingCart
+  );
+  const isCartLoadingError = useSelector(
+    (state: RootState) => state.cart.isCartFetchError
+  );
   const dispatch = useDispatch<AppDispatch>();
 
-  if (!cart.length) {
-    return <Typography variant="h5">Your cart is empty</Typography>;
-  }
+  useEffect(() => {
+    dispatch(fetchUserCart());
+  }, []);
 
   return (
-    <List>
-      {cart.map((pr: Product) => {
-        return (
-          <ListItem
-            key={pr.id}
-            alignItems="flex-start"
-            secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => {
-                  dispatch(removeProduct(pr));
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src={pr.img} />
-            </ListItemAvatar>
-            <ListItemText primary={pr.name} />
-            <ListItemButton></ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
+    <>
+      {Boolean(isLoadingCart) && <Loading />}
+
+      {Boolean(!isLoadingCart && isCartLoadingError) && <Box>Error!</Box>}
+
+      {Boolean(!isLoadingCart && !isCartLoadingError) && (
+        <CartProductList cart={cart} />
+      )}
+    </>
   );
 }
